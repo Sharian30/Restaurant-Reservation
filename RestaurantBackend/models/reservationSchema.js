@@ -40,6 +40,12 @@ const reservationSchema = new mongoose.Schema({
     date: {
         type: Date,
         required: true,
+        validate: {
+            validator: function(value) {
+                return value >= new Date();
+            },
+            message: 'Date must be in the future'
+        } 
 
     }
 })

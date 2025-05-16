@@ -10,7 +10,7 @@ export function AuthProvider({ children }) {
   const [user, setUser] = useState(null);
   const navigate = useNavigate();
 
-  // Check auth status on initial load
+  
   useEffect(() => {
     const checkAuth = async () => {
       try {

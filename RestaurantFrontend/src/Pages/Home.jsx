@@ -8,9 +8,11 @@ import Services from '../components/Services';
 import Reservation from '../components/Reservation';
 
 
+
 const Home = () => {
   return (
     <>
+ 
     <HeroSection/>
     <About/>
     <Services/>
@@ -18,6 +20,7 @@ const Home = () => {
     <OurIdentity/>
     <Team/>
     <Reservation/>
+    
     </>
   )
 }

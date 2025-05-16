@@ -6,44 +6,54 @@ import { dbConnection } from './database/dbConnection.js';
 import { errorMiddleware } from './error/error.js';
 import reservationRouter from './routes/reservation.js';
 import authRouter from "./routes/authRoutes.js";
+import recommendationRouter from "./routes/recommendationRoutes.js"; // Added this import
+
+// Error handling at startup
+process.on('uncaughtException', (err) => {
+  console.error('Uncaught Exception:', err);
+});
 
 dotenv.config({ path: './.env' });
 const app = express();
 
-// CORS configuration should come first
-app.use(cors({
-  origin: [process.env.FRONTEND_URL, "http://localhost:5173"],
-  methods: ['GET', 'POST', 'PUT', 'DELETE'],
-  credentials: true, // Important for sessions to work cross-origin
-  allowedHeaders: ['Content-Type', 'Authorization']
-}));
-
-// Session middleware
+// Middleware
 app.use(session({
-  name: 'sessionId', // Custom cookie name
+  name: 'sessionId',
   secret: process.env.SESSION_SECRET || 'your-secret-key',
   resave: false,
   saveUninitialized: false,
   cookie: {
-    secure: process.env.NODE_ENV === 'production', // Auto-adjust based on environment
+    secure: process.env.NODE_ENV === 'production',
     httpOnly: true,
-    sameSite: 'lax', // Helps with CSRF protection
-    maxAge: 24 * 60 * 60 * 1000 // 24 hours
+    sameSite: 'lax',
+    maxAge: 24 * 60 * 60 * 1000
   }
 }));
 
-// Body parsers
+app.use(cors({
+  origin: [process.env.FRONTEND_URL, "http://localhost:5173"],
+  methods: ['GET', 'POST', 'PUT', 'DELETE'],
+  credentials: true,
+  allowedHeaders: ['Content-Type', 'Authorization']
+}));
+
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 // Routes
 app.use('/api/v1/reservation', reservationRouter);
 app.use("/api/v1/auth", authRouter);
+app.use('/api/v1/recommendations', recommendationRouter); // Added this line
 
-// Database connection
+// Database
 dbConnection();
 
-// Error middleware (should be last)
+// Error handling
 app.use(errorMiddleware);
+
+const PORT = process.env.PORT || 4000;
+app.listen(PORT, () => {
+  console.log(`Server running on port ${PORT}`);
+});
 
 export default app;

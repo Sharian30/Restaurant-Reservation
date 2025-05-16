@@ -6,6 +6,7 @@ import Success from './Pages/Success';
 import NotFound from './Pages/NotFound';
 import Login from './components/Login';
 import Register from './components/Register';
+import Recommendations from './components/Recomandations';
 import { AuthProvider } from './authState';
 
 const App = () => {
@@ -16,6 +17,7 @@ const App = () => {
           <Route path='/' element={<Home />} />
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
+          <Route path='/recommendations' element={<Recommendations />} />
           <Route path='/success' element={<Success />} />
           <Route path='*' element={<NotFound />} />
         </Routes>
